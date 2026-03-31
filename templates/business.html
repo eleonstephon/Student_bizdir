@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    <section>
+        <div class="container-fluid">
+            <div class="row mt-4 mb-2 mx-2">
+                <div class="col-sm-9">
+                    <img class="border border-2 rounded-4" width="100%" height="300" src="" alt="">
+                </div>
+
+                <div class="col-sm-3 border border-2 rounded-3 py-2">
+                    <h4>
+                        Contact Details
+                    </h4>
+
+                    <p class="ms-4">
+                        <i class="bi bi-telephone"></i> <strong>Phone</strong><br>
+                        <small class="ms-3">
+                            <a href="tel:+2330000000000">00000000</a>
+                        </small>
+                    </p>
+
+                    <p class="ms-4">
+                        <i class="bi bi-envelope"></i> <strong>Email</strong><br>
+                        <small class="ms-3">
+                            <a href="mailto:example@emil.com">Send an email</a>
+                        </small>
+                    </p>
+
+                    <p class="ms-4">
+                        <strong><i class="bi bi-person-lines-fill"></i> WhatsApp</strong><br>
+                        <small class="ms-3" aria-disabled="true">
+                            +233-000-000-000
+                        </small>
+                    </p>
+
+                    <p class="ms-4">
+                        <i class="bi bi-geo-alt-fill"></i> <strong>Location</strong><br>
+                        <small class="ms-3">
+                            Joy Otabil Hall, Central University
+                        </small>
+                    </p>
+
+                    <button class="btn btn-outline-success me-3">
+                        <a href="https://wa.me/233000000000" target="_blank" style="text-decoration: none; color: black;">
+                            <img src="../static/images/whatsapp.png" width="30"  style="color: #25D366;" alt="WhatsApp_Icon">
+                            Chat on WhatsApp
+                        </a>
+                    </button>
+
+                    <button onclick="history.back()" class="btn btn-outline-warning" style="color:black">
+                        <i class="bi bi-arrow-left"></i> Back
+                    </button>
+                    
+                </div>
+            </div>
+
+            <div class="row mx-2 pe-3 mb-5">
+                <div class="col-sm-9 border border-2 rounded-3 pt-2">
+                    <div class="d-flex gap-3">
+                        <h5>
+                            Business Name
+                        </h5>
+                        <span>
+                            <small class="border rounded-pill px-1" style="background-color: rgb(168, 243, 218);">
+                                Category
+                            </small>
+                        </span>
+                    </div>
+
+                    <div>
+                        <p>
+                            Business description. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus molestias facilis, quasi praesentium natus ad mollitia animi, officiis a maxime debitis dolore exercitationem culpa vero! Quisquam quod nesciunt quaerat earum.
+                            Perspiciatis, voluptatem natus modi recusandae sed, reiciendis perferendis eaque aliquid exercitationem doloremque mollitia ipsa tempore ratione, doloribus nobis aspernatur optio incidunt error ipsam iste temporibus! At maiores tempora voluptate dolor!
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-3 border rounded-3 py-3">
+                    <div>
+                        <small>
+                            <i class="bi bi-calendar-date"></i> <strong>Business Hours</strong>
+                        </small>
+                    </div>
+
+                    <div>
+                        <div class="pb-2 d-flex justify-content-between">
+                            <span>
+                                <small>
+                                    Mon-Fri
+                                </small>
+                            </span>
+                            <span>
+                                <small>
+                                    8:00 AM &ndash; 7:00 PM
+                                </small>
+                            </span>
+                        </div>
+
+                        <div class="pb-2 d-flex justify-content-between">
+                            <span>
+                                <small>
+                                    Sat
+                                </small>
+                            </span>
+                            <span>
+                                <small>
+                                    9:00 AM &ndash; 7:00 PM
+                                </small>
+                            </span>
+                        </div>
+
+                        <div class="pb-2 d-flex justify-content-between">
+                            <span>
+                                <small>
+                                    Sun
+                                </small>
+                            </span>
+                            <span>
+                                <small style="color: rgba(215, 70, 70, 0.809);">
+                                    Closed
+                                </small>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock main %}
