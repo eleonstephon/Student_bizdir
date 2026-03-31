@@ -6,7 +6,7 @@ Run this script to populate the database with sample business listings.
 import sqlite3
 import os
 
-DATABASE_PATH = "database.py"
+DATABASE_PATH = "bizdir.db"
 
 # Sample business data with all required fields
 # Each tuple: (business_name, owner_name, category, description, whatsapp, phone, location, delivers, photo_filename, is_verified)
