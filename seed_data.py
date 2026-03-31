@@ -7,6 +7,7 @@ import sqlite3
 import os
 
 DATABASE_PATH = "database.py"
+DATABASE_PATH = "bizdir.db"  # Ensure this matches the path in database.py
 
 # Sample business data with all required fields
 # Each tuple: (business_name, owner_name, category, description, whatsapp, phone, location, delivers, photo_filename, is_verified)
