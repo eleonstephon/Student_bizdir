@@ -29,7 +29,8 @@ CREATE TABLE IF NOT EXISTS businesses (
     delivers        INTEGER DEFAULT 0,
     photo_filename  TEXT,
     date_added      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    is_verified     INTEGER DEFAULT 0
+    is_verified     INTEGER DEFAULT 0,
+    email           TEXT
 );
 """
 
@@ -291,3 +292,15 @@ def get_pending_businesses():
 
     conn.close()
     return rows
+
+def search_by_email(email):
+    """
+    Searches for a business owner by email address.
+    """
+    conn = get_connection()
+    row = conn.execute(
+        "SELECT * FROM businesses WHERE email = ?",
+        (email,)
+    ).fetchone()
+    conn.close()
+    return row
