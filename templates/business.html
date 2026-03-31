@@ -5,7 +5,7 @@
         <div class="container-fluid">
             <div class="row mt-4 mb-2 mx-2">
                 <div class="col-sm-9">
-                    <img class="border border-2 rounded-4" width="100%" height="300" src="" alt="">
+                    <img class="border border-2 rounded-4" width="100%" height="300" src="{{ url_for('static', filename=business.photo_filename) }}" alt="{{ business.business_name }}">
                 </div>
 
                 <div class="col-sm-3 border border-2 rounded-3 py-2">
@@ -16,33 +16,33 @@
                     <p class="ms-4">
                         <i class="bi bi-telephone"></i> <strong>Phone</strong><br>
                         <small class="ms-3">
-                            <a href="tel:+2330000000000">00000000</a>
+                            <a href="tel:+233{{ business.phone }}">{{ business.phone }}</a>
                         </small>
                     </p>
 
                     <p class="ms-4">
                         <i class="bi bi-envelope"></i> <strong>Email</strong><br>
                         <small class="ms-3">
-                            <a href="mailto:example@emil.com">Send an email</a>
+                            <a href="mailto:{{ business.email }}">{{ business.email }}</a>
                         </small>
                     </p>
 
                     <p class="ms-4">
                         <strong><i class="bi bi-person-lines-fill"></i> WhatsApp</strong><br>
                         <small class="ms-3" aria-disabled="true">
-                            +233-000-000-000
+                            +233{{ business.whatsapp }}
                         </small>
                     </p>
 
                     <p class="ms-4">
                         <i class="bi bi-geo-alt-fill"></i> <strong>Location</strong><br>
                         <small class="ms-3">
-                            Joy Otabil Hall, Central University
+                            {{ business.location }}
                         </small>
                     </p>
 
                     <button class="btn btn-outline-success me-3">
-                        <a href="https://wa.me/233000000000" target="_blank" style="text-decoration: none; color: black;">
+                        <a href="https://wa.me/233{{ business.whatsapp }}" target="_blank" style="text-decoration: none; color: black;">
                             <img src="../static/images/whatsapp.png" width="30"  style="color: #25D366;" alt="WhatsApp_Icon">
                             Chat on WhatsApp
                         </a>
@@ -59,19 +59,18 @@
                 <div class="col-sm-9 border border-2 rounded-3 pt-2">
                     <div class="d-flex gap-3">
                         <h5>
-                            Business Name
+                            {{ business.business_name }}
                         </h5>
                         <span>
                             <small class="border rounded-pill px-1" style="background-color: rgb(168, 243, 218);">
-                                Category
+                                {{ business.category }}
                             </small>
                         </span>
                     </div>
 
                     <div>
                         <p>
-                            Business description. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus molestias facilis, quasi praesentium natus ad mollitia animi, officiis a maxime debitis dolore exercitationem culpa vero! Quisquam quod nesciunt quaerat earum.
-                            Perspiciatis, voluptatem natus modi recusandae sed, reiciendis perferendis eaque aliquid exercitationem doloremque mollitia ipsa tempore ratione, doloribus nobis aspernatur optio incidunt error ipsam iste temporibus! At maiores tempora voluptate dolor!
+                            {{ business.description }}
                         </p>
                     </div>
                 </div>
