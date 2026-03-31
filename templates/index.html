@@ -130,33 +130,35 @@
       </section>
       
       <section>
-        <div class="container my-3 py-3 border-top">
-          <div class="row">
+    <div class="container my-3 py-3 border-top">
+        <div class="row g-4">
             {% for biz in businesses %}
-            <div class="col-sm-4 business-card" data-category="{{ biz.category }}">
-              <div class="card" style="width: 20rem;">
-                {% if biz.photo_filename %}
-                <img src="{{ url_for('static', filename='uploads/' + biz.photo_filename) }}" class="card-img-top" alt="{{ biz.photo_filename }}">
-                {% else %}
-                <div class="bg-secondary text-white d-flex align-items-center
-                  justify-content-center"
-                  style="height:200px;">
-                  <span>No Photo</span>
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 business-card" data-category="{{ biz.category }}">
+                <div class="card h-100">
+                    {% if biz.photo_filename %}
+                        <img src="{{ url_for('static', filename='uploads/' + biz.photo_filename) }}" 
+                             class="card-img-top" 
+                             alt="{{ biz.business_name }}"
+                             style="height: 200px; object-fit: cover;">
+                    {% else %}
+                        <div class="bg-secondary text-white d-flex align-items-center justify-content-center"
+                             style="height: 200px;">
+                            <span>No Photo</span>
+                        </div>
+                    {% endif %}
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ biz.business_name }}</h5>
+                        <p class="card-text text-truncate" style="max-width: 100%;">
+                            {{ biz.description }}
+                        </p>
+                        <a href="/business/{{ biz.id }}" class="btn btn-primary mt-auto">View Business</a>
+                    </div>
                 </div>
-                {% endif %}
-                <div class="card-body">
-                  <h5 class="card-title">{{ biz.business_name }}</h5>
-                  <p class="card-text">
-                    {{ biz.description }}
-                  </p>
-                  <a href="/business/{{ biz.id }}" class="btn btn-primary">View Business</a>
-                </div>
-              </div>
             </div>
             {% endfor %}
-          </div>
         </div>
-      </section>
+    </div>
+</section>
 {% endblock main %}
 
 {% block scripts %}
