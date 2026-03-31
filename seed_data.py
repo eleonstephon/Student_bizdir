@@ -106,9 +106,7 @@ sample_businesses = [
      "Computer repairs, virus removal, and hardware upgrades. Free diagnostics.",
      "0241112223", "0554445556", "ICT Centre, Room 5", 0, "pc_doctors.jpg", 1),
     
-    ("Print & Go", "Adwoa Gyamfi", "Tech & Services",
-     "Printing, scanning, and photocopying services. Cheap rates for students.",
-     "0207778889", "0541112223", "Main Library", 0, "print_go.jpg", 1),
+    
     
     ("Web Wizards", "Kojo Annan", "Tech & Services",
      "Website design and development for student businesses and projects.",
@@ -155,18 +153,12 @@ sample_businesses = [
      "Vintage and thrift clothing. Unique pieces at affordable prices.",
      "0547778889", "0209990001", "Hall 6, Room 4", 0, "vintage_vibes.jpg", 1),
     
-    ("The Tailor Shop", "Kwadwo Mensah", "Fashion & Clothing",
-     "Alterations, repairs, and custom tailoring for all occasions.",
-     "0245556667", "0557778889", "Arts Block, Room 8", 0, "tailor_shop.jpg", 1),
     
     ("Accessory Corner", "Adwoa Boakye", "Fashion & Clothing",
      "Bags, belts, hats, and fashion accessories for students.",
      "0201112223", "0543334445", "Hall 4, Lobby", 0, "accessory_corner.jpg", 1),
     
-    ("Campus Uniforms", "Kofi Asare", "Fashion & Clothing",
-     "Custom-made uniforms for student organizations and teams.",
-     "0554445556", "0246667778", "Sports Complex", 0, "campus_uniforms.jpg", 1),
-
+    
     # ========== LIGHTS & DECOR (9 businesses) ==========
     ("BrightLights Decor", "Samuel Adjei", "Lights & Decor",
      "LED fairy lights, room decoration packages, and custom neon signs for your hall room or events.",
@@ -217,33 +209,15 @@ sample_businesses = [
      "Eco-friendly cleaning services for hostels and rooms. We use biodegradable products.",
      "0240001111", "0502223333", "Hall 5, Room 10", 1, "", 0),
     
-    ("Event Planners UG", "Adwoa Boakye", "Services",
-     "Event planning, decorations, and coordination for campus events.",
-     "0248889990", "0551112223", "Business School", 0, "event_planners.jpg", 1),
     
-    ("Tutoring Central", "Kwame Ofori", "Services",
-     "Tutoring services in Math, Science, English, and more.",
-     "0541112223", "0204445556", "Library Study Rooms", 0, "tutoring.jpg", 1),
     
     ("Laundry Lounge", "Esi Mensah", "Services",
      "Wash and fold laundry services for students. Pickup and delivery available.",
      "0556667778", "0248889990", "Hall 3, Basement", 1, "laundry.jpg", 1),
     
-    ("CV & Cover Letter Pro", "Kojo Annan", "Services",
-     "Resume writing, cover letter editing, and career coaching.",
-     "0243334445", "0505556667", "Career Centre", 0, "cv_pro.jpg", 1),
     
-    ("Moving Helpers", "Kweku Mensah", "Services",
-     "Moving assistance for students changing hostels or moving off-campus.",
-     "0547778889", "0209990001", "Hall 6, Room 12", 1, "moving_helpers.jpg", 1),
     
-    ("Tech Support Desk", "Ama Osei", "Services",
-     "Help desk for tech issues, software installation, and troubleshooting.",
-     "0245556667", "0557778889", "ICT Centre", 0, "tech_support.jpg", 1),
     
-    ("Study Group Hub", "Yaw Asare", "Services",
-     "Organized study groups, peer tutoring, and exam preparation sessions.",
-     "0201112223", "0543334445", "Library, Room 5", 0, "study_hub.jpg", 1),
 ]
 
 def seed_database():
