@@ -2,13 +2,11 @@
 
 {% block main %}
     <section>
-        <div class="container-fluid">
-            <div class="row mt-4 mb-2 mx-2">
-                <div class="col-sm-9">
-                    <img class="border border-2 rounded-4" width="100%" height="300" src="{{ url_for('static', filename='uploads/' + business.photo_filename) }}" alt="{{ business.business_name }}">
-                </div>
+        <div class="container-fluid px-0 my-4">
+            <div class="row mb-2 ms-2 me-3">
+                <img class="col-md-9 rounded-5 mt-3" width="100%" height="364.8" src="{{ url_for('static', filename='uploads/' + business.photo_filename) }}" alt="{{ business.business_name }}">
 
-                <div class="col-sm-3 border border-2 rounded-3 py-2">
+                <div class="col-sm-12 col-md-3 border border-2 rounded-3 p-2 mt-3">
                     <h4>
                         Contact Details
                     </h4>
@@ -41,28 +39,29 @@
                         </small>
                     </p>
 
-                    <button class="btn btn-outline-success me-3">
-                        <a href="https://wa.me/233{{ business.whatsapp }}" target="_blank" style="text-decoration: none; color: black;">
-                            <img src="{{ url_for('static', filename='images/whatsapp.png') }}" width="30"  style="color: #25D366;" alt="WhatsApp_Icon">
-                            Chat on WhatsApp
-                        </a>
-                    </button>
-
-                    <button onclick="history.back()" class="btn btn-outline-warning" style="color:black">
-                        <i class="bi bi-arrow-left"></i> Back
-                    </button>
+                    <div class="d-flex justify-content-between flex-wrap gap-2 mt-4">
+                        <button class="btn btn-outline-success">
+                            <img class="text-nowrap" src="{{ url_for('static', filename='images/whatsapp.png') }}" width="30"  style="color: #25D366;" alt="WhatsApp_Icon">
+                            <a href="https://wa.me/233{{ business.whatsapp }}" target="_blank" style="text-decoration: none; color: black;">
+                                Chat on WhatsApp
+                            </a>
+                        </button>
+                        <button onclick="history.back()" class="btn btn-outline-warning" style="color:black">
+                            <i class="bi bi-arrow-left"></i> Back
+                        </button>
+                    </div>
                     
                 </div>
             </div>
 
-            <div class="row mx-2 pe-3 mb-5">
-                <div class="col-sm-9 border border-2 rounded-3 pt-2">
-                    <div class="d-flex gap-3">
+            <div class="row ms-2 me-3">
+                <div class="col-md-9 border border-2 rounded-3 pt-2 px-3 mt-2" width="100%" height="auto">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
                         <h5>
                             {{ business.business_name }}
                         </h5>
                         <span>
-                            <small class="border rounded-pill px-1" style="background-color: rgb(168, 243, 218);">
+                            <small class="border rounded-pill px-1 text-nowrap" style="background-color: rgb(168, 243, 218);">
                                 {{ business.category }}
                             </small>
                         </span>
@@ -75,7 +74,7 @@
                     </div>
                 </div>
                 
-                <div class="col-3 border rounded-3 py-3">
+                <div class="col-md-3 border rounded-3 py-3 mt-3">
                     <div>
                         <small>
                             <i class="bi bi-calendar-date"></i> <strong>Business Hours</strong>
