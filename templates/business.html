@@ -43,7 +43,7 @@
 
                     <button class="btn btn-outline-success me-3">
                         <a href="https://wa.me/233{{ business.whatsapp }}" target="_blank" style="text-decoration: none; color: black;">
-                            <img src="../static/images/whatsapp.png" width="30"  style="color: #25D366;" alt="WhatsApp_Icon">
+                            <img src="{{ url_for('static', filename='images/whatsapp.png') }}" width="30"  style="color: #25D366;" alt="WhatsApp_Icon">
                             Chat on WhatsApp
                         </a>
                     </button>
