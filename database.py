@@ -8,8 +8,6 @@ import os
 # This is the path to our database file.
 # It will be created automatically when init_db() runs for the first time.
 DATABASE_PATH = "bizdir.db"
-DATABASE = "businesses.db"
-
 
 # DATABASE SCHEMA
 
