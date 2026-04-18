@@ -6,9 +6,15 @@
     <section class="border-bottom">
         <div class="container mt-3">
           <span class="d-flex justify-content-center">
-            <small class="border border-2 rounded-pill p-1 mb-2"
-              >Student Business Hub</small
-            >
+
+            <small class="cus-hover border border-2 rounded-pill p-1 mb-2">
+              <style>
+                .cus-hover{
+                  background-color: rgba(136, 179, 225, 0.241);
+                }
+              </style>
+              Student Business Hub
+            </small>
           </span>
 
           <div class="text-center mb-2">
@@ -23,6 +29,7 @@
             <form class="my-3 d-flex" action="/" method="get">
               <input
                 name="search"
+                value="{{ search_query }}"
                 class="form-control me-1"
                 type="search"
                 placeholder="Search Businesses"
@@ -123,69 +130,71 @@
       </section>
       
       <section>
-        <div class="container my-3 py-3 border-top">
-          <div class="row">
+    <div class="container my-3 py-3 border-top">
+        <div class="row g-4">
             {% for biz in businesses %}
-            <div class="col-sm-4 business-card" data-category="{{ biz.category }}">
-              <div class="card" style="width: 20rem;">
-                {% if biz.photo_filename %}
-                <img src="{{ url_for('static', filename='uploads/' + biz.photo_filename) }}" class="card-img-top" alt="{{ biz.photo_filename }}">
-                {% else %}
-                <div class="bg-secondary text-white d-flex align-items-center
-                  justify-content-center"
-                  style="height:200px;">
-                  <span>No Photo</span>
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 business-card" data-category="{{ biz.category }}">
+                <div class="card h-100">
+                    {% if biz.photo_filename %}
+                        <img src="{{ url_for('static', filename='uploads/' + biz.photo_filename) }}" 
+                             class="card-img-top" 
+                             alt="{{ biz.business_name }}"
+                             style="height: 200px; object-fit: cover;">
+                    {% else %}
+                        <div class="bg-secondary text-white d-flex align-items-center justify-content-center"
+                             style="height: 200px;">
+                            <span>No Photo</span>
+                        </div>
+                    {% endif %}
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ biz.business_name }}</h5>
+                        <p class="card-text text-truncate" style="max-width: 100%;">
+                            {{ biz.description }}
+                        </p>
+                        <a href="/business/{{ biz.id }}" class="btn btn-primary mt-auto">View Business</a>
+                    </div>
                 </div>
-                {% endif %}
-                <div class="card-body">
-                  <h5 class="card-title">{{ biz.business_name }}</h5>
-                  <p class="card-text">
-                    {{ biz.description }}
-                  </p>
-                  <a href="/business/{{ biz.id }}" class="btn btn-primary">View Business</a>
-                </div>
-              </div>
             </div>
             {% endfor %}
-          </div>
         </div>
-      </section>
+    </div>
+</section>
 {% endblock main %}
 
 {% block scripts %}
 <script>
     const filterBtns = document.querySelectorAll('.filter-btn');
     const cards = document.querySelectorAll('.business-card');
+    
+    // 1. This line checks for ANY search, regardless of the category you are in
+    const urlParams = new URLSearchParams(window.location.search);
+    const isSearching = urlParams.has('search') && urlParams.get('search').trim() !== "";
 
-    cards.forEach(card => {
-        if (card.dataset.category !== 'Tech & Services') {
-            card.style.display = 'none';
-        }
-    });
+    if (isSearching) {
+        // 2. If a search is happening, show EVERYTHING found by the backend
+        cards.forEach(card => card.style.display = 'block');
+    } else {
+        // 3. If no search, use your default filter (Tech & Services)
+        cards.forEach(card => {
+            if (card.dataset.category === 'Tech & Services') {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
 
+    // 4. This section handles manual category clicking
     filterBtns.forEach(btn => {
         btn.addEventListener('click', function() {
-
-            filterBtns.forEach(b => {
-                b.classList.remove('btn-dark', 'active');
-                b.classList.add('btn-outline-dark');
-            });
-
-            this.classList.remove('btn-outline-dark');
-            this.classList.add('btn-dark', 'active');
-
             const selected = this.dataset.category;
-
             cards.forEach(card => {
-                if (selected === 'all') {
-                    card.style.display = 'block'; 
-                } else if (card.dataset.category === selected) {
+                if (selected === 'all' || card.dataset.category === selected) {
                     card.style.display = 'block';
                 } else {
                     card.style.display = 'none';
                 }
             });
-
         });
     });
 </script>
