@@ -1,3 +1,66 @@
 body {
     font-family: 'Lora', serif;
 }
+
+/*Flash Message Stylng*/
+.alert-success{
+    background-color: #d4edda;
+    border-left: 4px solid #28a745;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.alert-danger{
+    background-color: #f8d7da;
+    border-left: 4px solid #dc3545;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+/*Empty State*/
+.empty-state{
+    padding: 60px 20px;
+    text-align: center;
+    color: #6c757d;
+}
+
+.empty-state i {
+    font-size: 3rem;
+    margin-bottom: 16px;
+    opacity: 0.4;
+}
+
+.empty-state h5 {
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+/*404 Page*/
+.error-page{
+    min-height: 60vh;
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content:center;
+}
+
+.error-page .display-1{
+    font-size: 8rem;
+    font-weight: 900;
+    color: #dee2e6;
+    line-height: 1;
+}
+
+/*Admin Panel */
+.admin-card{
+    border-left: 4px solid #ffc107;
+    transition: box-shadow 0.2s;
+}
+
+.admin-card:hover{
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.admin-card .btn-success{
+    min-width: 80px;
+}
