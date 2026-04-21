@@ -157,42 +157,42 @@ def get_business_by_id(business_id):
 
 
 # FUNCTION 5: search_businesses(query)
-
 def search_businesses(query):
     """
     Searches verified businesses by name, description, or category.
-
-    HOW LIKE WORKS IN SQL:
-      % is a wildcard meaning "anything here"
-      So  %braids%  matches:  "Amara's Braids", "Best Braids in Town", "Braids by Kate"
-      We wrap the query in % on both sides to find it anywhere in the text.
-
-    USED BY: the homepage when the AI search fails (fallback search).
-
-    RETURNS: list of matching Row objects.
+    Splits query into words so multi-word searches work correctly.
     """
-    # Wrap in % wildcards for partial matching
-    search_term = f"%{query}%"
+    if not query:
+        return get_all_businesses()
 
+    words = query.strip().split()
     conn = get_connection()
+    conditions = []
+    params = []
+
+    for word in words:
+        term = f"%{word}%"
+        conditions.append(
+            "(business_name LIKE ? OR description LIKE ? OR category LIKE ?)"
+        )
+        params.extend([term, term, term])
+
+    where_clause = " OR ".join(conditions)
 
     rows = conn.execute(
-        """
+        f"""
         SELECT * FROM businesses
-        WHERE is_verified = 1
-          AND (
-              business_name LIKE ?   OR
-              description   LIKE ?   OR
-              category      LIKE ?
-          )
+        WHERE is_verified = 1 AND ({where_clause})
         ORDER BY date_added DESC
         """,
-        (search_term, search_term, search_term)  # ← Safe parameterized query 
+        params
     ).fetchall()
 
     conn.close()
     return rows
 
+
+   
 
 # FUNCTION 6: add_business(data)
 
@@ -226,9 +226,9 @@ def add_business(data):
         """
         INSERT INTO businesses
             (business_name, owner_name, category, description,
-             whatsapp, phone, location, delivers, photo_filename)
+             whatsapp, phone, location, delivers, photo_filename,is_verified)
         VALUES
-            (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """,
         (
             data["business_name"],
@@ -239,7 +239,8 @@ def add_business(data):
             data.get("phone", ""),
             data.get("location", ""),
             data.get("delivers", 0),
-            data.get("photo_filename", "")
+            data.get("photo_filename", ""),
+            data.get("is_verified", 0) #default to 0 if not provided
         )
         # Every value is passed as a parameter — never concatenated into the SQL string
     )
