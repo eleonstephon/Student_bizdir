@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Admin Panel — StuBiz{% endblock %}
+{% block main %}
+<div class="container mt-4">
+    <h2 class="fw-bold mb-4">🛡️ Admin Panel — Pending Approvals</h2>
+    {% if pending %}
+        {% for biz in pending %}
+        <div class="card mb-3 shadow-sm admin-card">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="mb-1">{{ biz.business_name }}</h5>
+                    <small class="text-muted">{{ biz.category }} · {{ biz.owner_name }}</small>
+                    <p class="mb-0 mt-1">{{ biz.description[:100] }}...</p>
+                </div>
+                <form action="/admin" method="POST" class="ms-3">
+                    <input type="hidden" name="business_id" value="{{ biz.id }}">
+                    <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="text-center py-5">
+            <h5 class="text-muted">No pending businesses to approve.</h5>
+        </div>
+    {% endif %}
+</div>
+{% endblock main %}

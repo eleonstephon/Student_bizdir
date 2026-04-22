@@ -9,7 +9,6 @@ import os
 # It will be created automatically when init_db() runs for the first time.
 DATABASE_PATH = "bizdir.db"
 
-
 # DATABASE SCHEMA
 
 # This is the SQL that creates the businesses table.
