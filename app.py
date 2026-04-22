@@ -213,7 +213,8 @@ def register_submit():
         "phone": phone,
         "location": location,
         "delivers": delivers,
-        "photo_filename": photo_filename
+        "photo_filename": photo_filename,
+        "is_verified": 1
     }
     
     try:
