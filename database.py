@@ -9,7 +9,6 @@ import os
 # It will be created automatically when init_db() runs for the first time.
 DATABASE_PATH = "bizdir.db"
 
-
 # DATABASE SCHEMA
 
 # This is the SQL that creates the businesses table.
@@ -164,6 +163,18 @@ def search_businesses(query):
     """
     if not query:
         return get_all_businesses()
+    Filters out common words like 'or', 'and', 'the'.
+    """
+    if not query:
+        return get_all_businesses()
+
+    # Filter out common words that aren't useful for search
+    stop_words = {"or", "and", "the", "a", "an", "in", "on", "at", "for", "to"}
+    
+    words = [w for w in query.strip().split() if w.lower() not in stop_words]
+
+    if not words:
+        return get_all_businesses()
 
     words = query.strip().split()
     conn = get_connection()
@@ -192,7 +203,10 @@ def search_businesses(query):
     return rows
 
 
+<<<<<<< HEAD
    
+=======
+>>>>>>> main
 
 # FUNCTION 6: add_business(data)
 
@@ -226,9 +240,15 @@ def add_business(data):
         """
         INSERT INTO businesses
             (business_name, owner_name, category, description,
+<<<<<<< HEAD
              whatsapp, phone, location, delivers, photo_filename,is_verified)
         VALUES
             (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+=======
+             whatsapp, phone, location, delivers, photo_filename, is_verified)
+        VALUES
+            (?, ?, ?, ?, ?, ?, ?, ?, ?,?)
+>>>>>>> main
         """,
         (
             data["business_name"],
@@ -240,7 +260,11 @@ def add_business(data):
             data.get("location", ""),
             data.get("delivers", 0),
             data.get("photo_filename", ""),
+<<<<<<< HEAD
             data.get("is_verified", 0) #default to 0 if not provided
+=======
+            data.get("is_verified", 0)
+>>>>>>> main
         )
         # Every value is passed as a parameter — never concatenated into the SQL string
     )

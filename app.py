@@ -180,9 +180,10 @@ def register_submit():
     if not category:
         errors.append("Category is required")
         print("❌ ERROR: Category missing")
-    if len(description) < 20:
+    if description and len(description) < 20:
         errors.append("Description must be at least 20 characters")
         print(f"❌ ERROR: Description too short ({len(description)} chars)")
+
     
     print(f"Total errors: {len(errors)}")
     
@@ -197,6 +198,7 @@ def register_submit():
     # Handle photo upload
     photo_filename = ""
     photo_file = request.files.get("photo")
+
     if photo_file and photo_file.filename:
         from werkzeug.utils import secure_filename
         filename = secure_filename(photo_file.filename)
@@ -214,7 +216,7 @@ def register_submit():
         "location": location,
         "delivers": delivers,
         "photo_filename": photo_filename,
-        "is_verified": 1 #Auto-verify for prototype
+        "is_verified": 1
     }
     
     try:
