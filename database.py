@@ -170,39 +170,6 @@ def search_businesses(query):
 
 # FUNCTION 6: add_business(data)
 def add_business(data):
-    """
-    Inserts a new business registration into the database.
-
-    CALLED BY: the POST /register route in app.py, AFTER validation passes.
-
-    WHAT 'data' LOOKS LIKE (a dictionary from app.py):
-    {
-        "business_name":  "Amara's Braids",
-        "owner_name":     "Amara Johnson",
-        "category":       "Fashion",
-        "description":    "Affordable braiding services on campus",
-        "whatsapp":       "0712345678",
-        "phone":          "0712345678",
-        "location":       "Block C, Room 12",
-        "delivers":       0,
-        "photo_filename": "photo_abc123.jpg"   
-    }
-
-    NOTE: is_verified is NOT in the data dict — it defaults to 0 in the schema.
-    New listings always start as unverified (pending). ⭐ Security feature!
-
-    RETURNS: the ID of the newly inserted row (useful for redirecting to the profile).
-    """
-    conn = get_connection()
-
-    cursor = conn.execute(
-        """
-    INSERT INTO businesses
-            (business_name, owner_name, category, description,
-             whatsapp, phone, location, delivers, photo_filename, is_verified)
-        VALUES
-            (?, ?, ?, ?, ?, ?, ?, ?, ?,?)
-        """,
     conn = get_connection()
 
     cursor = conn.execute(
@@ -264,4 +231,4 @@ def search_by_email(email):
         (email,)
     ).fetchone()
     conn.close()
-    return row  
+    return row
