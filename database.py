@@ -203,10 +203,6 @@ def search_businesses(query):
     return rows
 
 
-<<<<<<< HEAD
-   
-=======
->>>>>>> main
 
 # FUNCTION 6: add_business(data)
 
@@ -226,7 +222,7 @@ def add_business(data):
         "phone":          "0712345678",
         "location":       "Block C, Room 12",
         "delivers":       0,
-        "photo_filename": "photo_abc123.jpg"   ← just the filename, not the full path
+        "photo_filename": "photo_abc123.jpg"   
     }
 
     NOTE: is_verified is NOT in the data dict — it defaults to 0 in the schema.
@@ -238,17 +234,11 @@ def add_business(data):
 
     cursor = conn.execute(
         """
-        INSERT INTO businesses
+    INSERT INTO businesses
             (business_name, owner_name, category, description,
-<<<<<<< HEAD
-             whatsapp, phone, location, delivers, photo_filename,is_verified)
-        VALUES
-            (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-=======
              whatsapp, phone, location, delivers, photo_filename, is_verified)
         VALUES
             (?, ?, ?, ?, ?, ?, ?, ?, ?,?)
->>>>>>> main
         """,
         (
             data["business_name"],
@@ -260,11 +250,7 @@ def add_business(data):
             data.get("location", ""),
             data.get("delivers", 0),
             data.get("photo_filename", ""),
-<<<<<<< HEAD
-            data.get("is_verified", 0) #default to 0 if not provided
-=======
             data.get("is_verified", 0)
->>>>>>> main
         )
         # Every value is passed as a parameter — never concatenated into the SQL string
     )
@@ -328,4 +314,4 @@ def search_by_email(email):
         (email,)
     ).fetchone()
     conn.close()
-    return row
+    return row  
