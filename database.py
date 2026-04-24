@@ -156,10 +156,13 @@ def get_business_by_id(business_id):
 
 
 # FUNCTION 5: search_businesses(query)
-
 def search_businesses(query):
     """
     Searches verified businesses by name, description, or category.
+    Splits query into words so multi-word searches work correctly.
+    """
+    if not query:
+        return get_all_businesses()
     Filters out common words like 'or', 'and', 'the'.
     """
     if not query:
@@ -173,6 +176,7 @@ def search_businesses(query):
     if not words:
         return get_all_businesses()
 
+    words = query.strip().split()
     conn = get_connection()
     conditions = []
     params = []
@@ -199,6 +203,10 @@ def search_businesses(query):
     return rows
 
 
+<<<<<<< HEAD
+   
+=======
+>>>>>>> main
 
 # FUNCTION 6: add_business(data)
 
@@ -232,9 +240,15 @@ def add_business(data):
         """
         INSERT INTO businesses
             (business_name, owner_name, category, description,
+<<<<<<< HEAD
+             whatsapp, phone, location, delivers, photo_filename,is_verified)
+        VALUES
+            (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+=======
              whatsapp, phone, location, delivers, photo_filename, is_verified)
         VALUES
             (?, ?, ?, ?, ?, ?, ?, ?, ?,?)
+>>>>>>> main
         """,
         (
             data["business_name"],
@@ -246,7 +260,11 @@ def add_business(data):
             data.get("location", ""),
             data.get("delivers", 0),
             data.get("photo_filename", ""),
+<<<<<<< HEAD
+            data.get("is_verified", 0) #default to 0 if not provided
+=======
             data.get("is_verified", 0)
+>>>>>>> main
         )
         # Every value is passed as a parameter — never concatenated into the SQL string
     )
