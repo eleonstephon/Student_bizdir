@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Create Account — StuBiz{% endblock %}
+
+{% block main %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+
+            <div class="text-center mb-4">
+                <h2 class="fw-bold">Create Your Account</h2>
+                <p class="text-muted">Join StuBiz and start discovering student businesses.</p>
+            </div>
+
+            <form action="/signup" method="POST" class="signup-form">
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Full Name *</label>
+                    <input type="text" name="full_name" class="form-control"
+                           placeholder="e.g. Cecilia Mensah" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Email Address *</label>
+                    <input type="email" name="email" class="form-control"
+                           placeholder="e.g. cecilia@email.com" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Password *</label>
+                    <input type="password" name="password" id="password"
+                           class="form-control" placeholder="Minimum 6 characters" required>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Confirm Password *</label>
+                    <input type="password" name="confirm_password" id="confirm_password"
+                           class="form-control" placeholder="Repeat your password" required>
+                    <div id="password-match-msg" class="form-text"></div>
+                </div>
+
+                <button type="submit" class="btn btn-warning w-100 fw-bold py-2">
+                    Create Account
+                </button>
+
+                <p class="text-center mt-3 text-muted" style="font-size:14px;">
+                    Already have an account?
+                    <a href="/login" class="text-warning fw-bold">Log in</a>
+                </p>
+
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock main %}
+
+{% block scripts %}
+<script>
+    // Live password match check
+    const pw = document.getElementById("password");
+    const cpw = document.getElementById("confirm_password");
+    const msg = document.getElementById("password-match-msg");
+
+    function checkMatch() {
+        if (cpw.value === "") { msg.textContent = ""; return; }
+        if (pw.value === cpw.value) {
+            msg.textContent = "Passwords match ✅";
+            msg.style.color = "green";
+        } else {
+            msg.textContent = "Passwords do not match ❌";
+            msg.style.color = "red";
+        }
+    }
+    pw.addEventListener("input", checkMatch);
+    cpw.addEventListener("input", checkMatch);
+</script>
+{% endblock scripts %}
