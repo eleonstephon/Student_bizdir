@@ -16,20 +16,29 @@ DATABASE_PATH = "bizdir.db"
 # This runs once when the app starts (see init_db below).
 
 SCHEMA = """
+CREATE TABLE IF NOT EXISTS users (
+    id            INTEGER PRIMARY KEY AUTOINCREMENT,
+    full_name     TEXT NOT NULL,
+    email         TEXT NOT NULL UNIQUE,
+    password_hash TEXT NOT NULL,
+    date_created  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE IF NOT EXISTS businesses (
-    id              INTEGER PRIMARY KEY AUTOINCREMENT,
-    business_name   TEXT NOT NULL,
-    owner_name      TEXT NOT NULL,
-    category        TEXT NOT NULL,
-    description     TEXT NOT NULL,
-    whatsapp        TEXT,
-    phone           TEXT,
-    location        TEXT,
-    delivers        INTEGER DEFAULT 0,
-    photo_filename  TEXT,
-    date_added      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    is_verified     INTEGER DEFAULT 0,
-    email           TEXT
+    id             INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id        INTEGER,
+    business_name  TEXT NOT NULL,
+    owner_name     TEXT NOT NULL,
+    category       TEXT NOT NULL,
+    description    TEXT NOT NULL,
+    whatsapp       TEXT,
+    phone          TEXT,
+    location       TEXT,
+    delivers       INTEGER DEFAULT 0,
+    photo_filename TEXT,
+    date_added     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    is_verified    INTEGER DEFAULT 0,
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );
 """
 
@@ -231,12 +240,13 @@ def add_business(data):
     cursor = conn.execute(
         """
         INSERT INTO businesses
-            (business_name, owner_name, category, description,
+            (uer_id, business_name, owner_name, category, description,
              whatsapp, phone, location, delivers, photo_filename, is_verified)
         VALUES
-            (?, ?, ?, ?, ?, ?, ?, ?, ?,?)
+            (?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?)
         """,
         (
+            data.get["user_id"],
             data["business_name"],
             data["owner_name"],
             data["category"],
@@ -246,7 +256,7 @@ def add_business(data):
             data.get("location", ""),
             data.get("delivers", 0),
             data.get("photo_filename", ""),
-            data.get("is_verified", 0)
+            data.get("is_verified", 1)
         )
         # Every value is passed as a parameter — never concatenated into the SQL string
     )
@@ -311,3 +321,81 @@ def search_by_email(email):
     ).fetchone()
     conn.close()
     return row
+
+# FUNCTION: create_user
+
+def create_user(full_name, email, password_hash):
+    """
+    Inserts a new user into the users table.
+    Returns the new user's ID, or None if email already exists.
+    """
+    conn = get_connection()
+    try:
+        cursor = conn.execute(
+            """
+            INSERT INTO users (full_name, email, password_hash)
+            VALUES (?, ?, ?)
+            """,
+            (full_name, email, password_hash)
+        )
+        conn.commit()
+        new_id = cursor.lastrowid
+        conn.close()
+        return new_id
+    except sqlite3.IntegrityError:
+        # Email already exists — UNIQUE constraint failed
+        conn.close()
+        return None
+
+
+# FUNCTION: get_user_by_email
+
+def get_user_by_email(email):
+    """
+    Finds a user by their email address.
+    Returns a Row object or None if not found.
+    Used during login to verify credentials.
+    """
+    conn = get_connection()
+    row = conn.execute(
+        "SELECT * FROM users WHERE email = ?",
+        (email,)
+    ).fetchone()
+    conn.close()
+    return row
+
+
+# FUNCTION: get_user_by_id
+
+def get_user_by_id(user_id):
+    """
+    Finds a user by their ID.
+    Required by Flask-Login user_loader.
+    """
+    conn = get_connection()
+    row = conn.execute(
+        "SELECT * FROM users WHERE id = ?",
+        (user_id,)
+    ).fetchone()
+    conn.close()
+    return row
+
+
+# FUNCTION: get_businesses_by_user
+
+def get_businesses_by_user(user_id):
+    """
+    Returns all businesses belonging to a specific user.
+    Used to populate the dashboard.
+    """
+    conn = get_connection()
+    rows = conn.execute(
+        """
+        SELECT * FROM businesses
+        WHERE user_id = ?
+        ORDER BY date_added DESC
+        """,
+        (user_id,)
+    ).fetchall()
+    conn.close()
+    return rows
