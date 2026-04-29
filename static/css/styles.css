@@ -64,3 +64,124 @@ body {
 .admin-card .btn-success{
     min-width: 80px;
 }
+
+/* Signup and Login Pages  */
+.signup-form,
+.login-form {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.signup-form .form-control:focus,
+.login-form .form-control:focus {
+    border-color: #FFC600;
+    box-shadow: 0 0 0 0.2rem rgba(255, 198, 0, 0.25);
+}
+
+.signup-form .form-control:focus,
+.login-form .form-control:focus {
+    background-color: #FFC600;
+    border-color: #FFC600;
+    color: #1A1A2E;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    transition: background-color 0.2s, transform 0.1s;
+}
+.signup-form .btn-warning:hover,
+.login-form .btn-warning:hover {
+    background-color: #e6b200;
+    transform: translateY(-1px);
+}
+
+/* Dashboard */
+.dashboard-card {
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    transition: box-shadow 0.2s, transform 0.2s;
+    overflow: hidden;
+}
+
+.dashboard-card:hover {
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Live badge - green */
+.badge.bg-success {
+    background-color: #28a745 !important;
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 20px;
+}
+
+/* Pending badge - yellow */
+.badge.bg-warning {
+    background-color: #FFC600 !important;
+    color: #1A1A2E !important;
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 20px;
+}
+
+/* Empty state on dashboard */
+.dashboard-empty {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 60px 20px;
+    color: #6c757d;
+}
+
+.dashboard-empty i {
+    font-size: 3rem;
+    opacity: 0.3;
+    margin-bottom: 16px;
+    display: block;
+}
+
+/* Add New Business button - top right of dashboard */
+.dashboard-header .btn-warning {
+    background-color: #FFC600;
+    border: none;
+    color: 1A1A2E;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 8px;
+}
+
+/* New Listing Form ----------- */
+.new-listing-form {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06)
+}
+
+.new-listing-form .form-control:focus,
+.new-listing-form .form-select:focus {
+    border-color: #FFC600;
+    box-shadow: 0 0 0 0.2rem rgba(255, 198, 0, 0.25);
+}
+
+.new-listing-form .form-label {
+    color: #1A1A2E;
+    margin-bottom: 4px;
+}
+
+#photoPreview {
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    max-width: 200px;
+    margin-top: 10px;
+}
+
+@media (max-width: 576px) {
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 12px;
+    }
+}
