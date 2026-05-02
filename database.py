@@ -1,4 +1,3 @@
-
 import sqlite3  
 import os       
 
@@ -181,18 +180,17 @@ def search_businesses(query):
 def add_business(data):
     conn = get_connection()
 
-    cursor = conn.execute(
-<<<<<<< HEAD
-        """
+    cursor = conn.execute()
+
+    """
         INSERT INTO businesses
             (uer_id, business_name, owner_name, category, description,
              whatsapp, phone, location, delivers, photo_filename, is_verified)
         VALUES
             (?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?)
-        """,
-=======
->>>>>>> 43ebf30442612e28b98d976397b772ad86e9b1d8
-        (
+        """
+
+    (
             data.get["user_id"],
             data["business_name"],
             data["owner_name"],
@@ -203,15 +201,10 @@ def add_business(data):
             data.get("location", ""),
             data.get("delivers", 0),
             data.get("photo_filename", ""),
-<<<<<<< HEAD
-            data.get("is_verified", 1)
-=======
-            data.get("is_verified", 0) #default to 0 if not provided
-
->>>>>>> 43ebf30442612e28b98d976397b772ad86e9b1d8
+            data.get("is_verified", 1) #default to 0 if not provided
         )
         # Every value is passed as a parameter — never concatenated into the SQL string
-    )
+    
 
     conn.commit()           # Save changes to disk
     new_id = cursor.lastrowid  # The auto-generated ID of the new row

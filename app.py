@@ -196,7 +196,7 @@ def login_page():
     Shows login form and handles authentication.
 
     SECURITY FEATURES:
-    - Password checked against hash using check_password_hash ⭐
+    - Password checked against hash using check_password_hash 
     - Plain text password never stored or compared directly
     - Generic error messages (don't reveal if email exists)
     """
