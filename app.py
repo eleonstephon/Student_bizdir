@@ -295,7 +295,7 @@ def new_listing():
         if len(description) < 20:
             errors.append("Description must be at least 20 characters.")
 
-        valid_categories = ["Food", "Fashion", "Beauty", "Tech", "Tutoring", "Art", "Other"]
+        valid_categories = ["Food & Drinks", "Beauty & Skincare", "Fashion & Clothing", "Tech & Services ", "Lights & Decor", "Services"]
         if category and category not in valid_categories:
             errors.append("Please select a valid category.")
 
@@ -313,8 +313,9 @@ def new_listing():
                 flash("Only image files are allowed (PNG, JPG, GIF, WEBP).", "error")
                 return redirect(url_for("new_listing"))
 
-            safe_name = secure_filename(photo_file.filename)
-            unique_filename = f"biz_{int(time.time())}_{safe_name}"
+            filename = secure_filename(photo_file.filename)
+            import time
+            unique_filename = f"biz_{int(time.time())}_{filename}"
             save_path = os.path.join(app.config["UPLOAD_FOLDER"], unique_filename)
             photo_file.save(save_path)
             photo_filename = unique_filename
