@@ -5,6 +5,7 @@ from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 import database
+import re
 
 # ==========================================
 # ⚙️ APP SETUP
@@ -60,11 +61,7 @@ def homepage():
     search_query = request.args.get("search", "").strip()
     category_filter = request.args.get("category", "").strip()
     if search_query:
-        try:
-            from ai_search import ai_search
-            businesses = ai_search(search_query)
-        except Exception:
-            businesses = database.search_businesses(search_query)
+        businesses = database.search_businesses(search_query)
     elif category_filter:
         businesses = database.get_all_businesses(category=category_filter)
     else:
@@ -84,6 +81,11 @@ def business_profile(business_id):
 # ==========================================
 # 📝 ROUTE 4: GET+POST /signup (Create Account)
 # ==========================================
+
+def is_valid_email(email):
+    return re.match(r"[^@]+@[^@]+\.[^@]+", email)
+
+
 @app.route("/signup", methods=["GET", "POST"])
 def signup_page():
     if current_user.is_authenticated:
@@ -96,6 +98,11 @@ def signup_page():
         if not full_name or not email or not password:
             flash("All fields are required.", "error")
             return redirect(url_for("signup_page"))
+        
+        if not is_valid_email(email):
+            flash("Please enter a valid email address.", "error")
+            return redirect(url_for("signup_page"))
+
         if password != confirm:
             flash("Passwords do not match.", "error")
             return redirect(url_for("signup_page"))
