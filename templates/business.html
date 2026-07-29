@@ -1,128 +1,114 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% block title %}Edit {{ business.business_name }} — StuBiz{% endblock %}
 
 {% block main %}
-    <section>
-        <div class="container-fluid px-0 my-4">
-            <div class="row mb-2 ms-2 me-3">
-                <img class="col-md-9 rounded-5 mt-3" width="100%" height="364.8" src="{{ url_for('static', filename='uploads/' + business.photo_filename) }}" alt="{{ business.business_name }}">
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
 
-                <div class="col-sm-12 col-md-3 border border-2 rounded-3 p-2 mt-3">
-                    <h4>
-                        Contact Details
-                    </h4>
-
-                    <p class="ms-4">
-                        <i class="bi bi-telephone"></i> <strong>Phone</strong><br>
-                        <small class="ms-3">
-                            <a href="tel:+233{{ business.phone }}">{{ business.phone }}</a>
-                        </small>
-                    </p>
-
-                    <p class="ms-4">
-                        <i class="bi bi-envelope"></i> <strong>Email</strong><br>
-                        <small class="ms-3">
-                            <a href="mailto:{{ business.email }}">{{ business.email }}</a>
-                        </small>
-                    </p>
-
-                    <p class="ms-4">
-                        <strong><i class="bi bi-person-lines-fill"></i> WhatsApp</strong><br>
-                        <small class="ms-3" aria-disabled="true">
-                            +233{{ business.whatsapp }}
-                        </small>
-                    </p>
-
-                    <p class="ms-4">
-                        <i class="bi bi-geo-alt-fill"></i> <strong>Location</strong><br>
-                        <small class="ms-3">
-                            {{ business.location }}
-                        </small>
-                    </p>
-
-                    <div class="d-flex justify-content-between flex-wrap gap-2 mt-4">
-                        <button class="btn btn-outline-success">
-                            <img class="text-nowrap" src="{{ url_for('static', filename='images/whatsapp.png') }}" width="30"  style="color: #25D366;" alt="WhatsApp_Icon">
-                            <a href="https://wa.me/233{{ business.whatsapp }}" target="_blank" style="text-decoration: none; color: black;">
-                                Chat on WhatsApp
-                            </a>
-                        </button>
-                        <button onclick="history.back()" class="btn btn-outline-warning" style="color:black">
-                            <i class="bi bi-arrow-left"></i> Back
-                        </button>
-                    </div>
-                    
-                </div>
+            <div class="text-center mb-4">
+                <h2 class="fw-bold">Edit Your Business</h2>
+                <p class="text-muted">Update your listing details below.</p>
             </div>
 
-            <div class="row ms-2 me-3">
-                <div class="col-md-9 border border-2 rounded-3 pt-2 px-3 mt-2" width="100%" height="auto">
-                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-                        <h5>
-                            {{ business.business_name }}
-                        </h5>
-                        <span>
-                            <small class="border rounded-pill px-1 text-nowrap" style="background-color: rgb(168, 243, 218);">
-                                {{ business.category }}
-                            </small>
-                        </span>
-                    </div>
+            <form action="/business/{{ business.id }}/edit" method="POST" enctype="multipart/form-data">
 
-                    <div>
-                        <p>
-                            {{ business.description }}
-                        </p>
-                    </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Business Name *</label>
+                    <input type="text" name="business_name" class="form-control"
+                           value="{{ business.business_name }}" required>
+               </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Category *</label>
+                    <select name="category" class="form-select" required>
+                        <option value="Food & Drinks" {% if business.category == "Food & Drinks" %}selected{% endif %}>Food & Drinks</option>
+                        <option value="Beauty & Skincare" {% if business.category == "Beauty & Skincare" %}selected{% endif %}>Beauty & Skincare</option>
+                        <option value="Fashion & Clothing" {% if business.category == "Fashion & Clothing" %}selected{% endif %}>Fashion & Clothing</option>
+                        <option value="Tech & Services" {% if business.category == "Tech & Services" %}selected{% endif %}>Tech & Services</option>
+                        <option value="Lights & Decor" {% if business.category == "Lights & Decor" %}selected{% endif %}>Lights & Decor</option>
+                        <option value="Services" {% if business.category == "Services" %}selected{% endif %}>Services</option>
+                        <option value="Other" {% if business.category == "Other" %}selected{% endif %}>Other</option>
+                    </select>
                 </div>
-                
-                <div class="col-md-3 border rounded-3 py-3 mt-3">
-                    <div>
-                        <small>
-                            <i class="bi bi-calendar-date"></i> <strong>Business Hours</strong>
-                        </small>
-                    </div>
 
-                    <div>
-                        <div class="pb-2 d-flex justify-content-between">
-                            <span>
-                                <small>
-                                    Mon-Fri
-                                </small>
-                            </span>
-                            <span>
-                                <small>
-                                    8:00 AM &ndash; 7:00 PM
-                                </small>
-                            </span>
-                        </div>
-
-                        <div class="pb-2 d-flex justify-content-between">
-                            <span>
-                                <small>
-                                    Sat
-                                </small>
-                            </span>
-                            <span>
-                                <small>
-                                    9:00 AM &ndash; 7:00 PM
-                                </small>
-                            </span>
-                        </div>
-
-                        <div class="pb-2 d-flex justify-content-between">
-                            <span>
-                                <small>
-                                    Sun
-                                </small>
-                            </span>
-                            <span>
-                                <small style="color: rgba(215, 70, 70, 0.809);">
-                                    Closed
-                                </small>
-                            </span>
-                        </div>
-                    </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Business Description *</label>
+                    <textarea name="description" class="form-control" rows="4"
+                              required>{{ business.description }}</textarea>
+                    <div class="form-text text-muted">Minimum 20 characters.</div>
                 </div>
-            </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">WhatsApp Number</label>
+                    <input type="text" name="whatsapp" class="form-control"
+                           value="{{ business.whatsapp or '' }}" placeholder="e.g. 0241234567">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Phone Number</label>
+                    <input type="text" name="phone" class="form-control"
+                           value="{{ business.phone or '' }}" placeholder="e.g. 0201234567">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Location on Campus</label>
+                    <input type="text" name="location" class="form-control"
+                           value="{{ business.location or '' }}" placeholder="e.g. Near Science Block">
+                </div>
+
+                <div class="mb-3 form-check">
+                    <input type="checkbox" name="delivers"
+                           class="form-check-input" id="delivers"
+                           {% if business.delivers %}checked{% endif %}>
+                    <label class="form-check-label" for="delivers">
+                        I offer delivery
+                    </label>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Product Photo</label>
+                    {% if business.photo_filename %}
+                        <div class="mb-2">
+                            <img src="{{ url_for('static', filename='uploads/' + business.photo_filename) }}"
+                                 style="width:200px; border-radius:8px;" alt="Current photo">
+                            <div class="form-text text-muted">Current photo — leave the field below empty to keep it.</div>
+                        </div>
+                    {% endif %}
+                    <input type="file" name="photo" id="photoInput"
+                           class="form-control" accept="image/*">
+                    <img id="photoPreview" src=""
+                         style="display:none; width:200px; margin-top:10px; border-radius:8px;">
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-warning fw-bold py-2 flex-fill">
+                        Save Changes
+                    </button>
+                    <a href="/dashboard" class="btn btn-outline-secondary py-2">
+                        Cancel
+                    </a>
+                </div>
+
+            </form>
         </div>
-    </section>
+    </div>
+</div>
 {% endblock main %}
+
+{% block scripts %}
+<script>
+    document.getElementById("photoInput").addEventListener("change", function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById("photoPreview");
+                preview.src = e.target.result;
+                preview.style.display = "block";
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+{% endblock scripts %}

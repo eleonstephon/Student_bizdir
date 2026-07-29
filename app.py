@@ -248,6 +248,9 @@ def edit_business(business_id):
             unique_filename = f"biz_{int(time.time())}_{filename}"
             photo_file.save(os.path.join(app.config["UPLOAD_FOLDER"], unique_filename))
             updated_data["photo_filename"] = unique_filename
+        else:
+            # No new photo selected — keep the existing one instead of wiping it out
+            updated_data["photo_filename"] = business["photo_filename"]
 
         database.update_business(business_id, updated_data)
         flash("Business updated successfully!", "success")
