@@ -1,128 +1,74 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% block title %}{{ business.business_name }} — StuBiz{% endblock %}
 
 {% block main %}
-    <section>
-        <div class="container-fluid px-0 my-4">
-            <div class="row mb-2 ms-2 me-3">
-                <img class="col-md-9 rounded-5 mt-3" width="100%" height="364.8" src="{{ url_for('static', filename='uploads/' + business.photo_filename) }}" alt="{{ business.business_name }}">
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
 
-                <div class="col-sm-12 col-md-3 border border-2 rounded-3 p-2 mt-3">
-                    <h4>
-                        Contact Details
-                    </h4>
+            <div class="card shadow-sm">
+                {% if business.photo_filename %}
+                    <img src="{{ url_for('static', filename='uploads/' + business.photo_filename) }}"
+                         class="card-img-top" style="height:320px; object-fit:cover;"
+                         alt="{{ business.business_name }}">
+                {% else %}
+                    <div class="bg-secondary text-white d-flex align-items-center justify-content-center"
+                         style="height:320px;">
+                        <span>No Photo</span>
+                    </div>
+                {% endif %}
 
-                    <p class="ms-4">
-                        <i class="bi bi-telephone"></i> <strong>Phone</strong><br>
-                        <small class="ms-3">
-                            <a href="tel:+233{{ business.phone }}">{{ business.phone }}</a>
-                        </small>
-                    </p>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h2 class="fw-bold mb-0">{{ business.business_name }}</h2>
+                        <span class="badge bg-light text-dark border">{{ business.category }}</span>
+                    </div>
 
-                    <p class="ms-4">
-                        <i class="bi bi-envelope"></i> <strong>Email</strong><br>
-                        <small class="ms-3">
-                            <a href="mailto:{{ business.email }}">{{ business.email }}</a>
-                        </small>
-                    </p>
+                    <p class="text-muted mb-3">Listed by {{ business.owner_name }}</p>
 
-                    <p class="ms-4">
-                        <strong><i class="bi bi-person-lines-fill"></i> WhatsApp</strong><br>
-                        <small class="ms-3" aria-disabled="true">
-                            +233{{ business.whatsapp }}
-                        </small>
-                    </p>
+                    <p class="mb-4">{{ business.description }}</p>
 
-                    <p class="ms-4">
-                        <i class="bi bi-geo-alt-fill"></i> <strong>Location</strong><br>
-                        <small class="ms-3">
-                            {{ business.location }}
-                        </small>
-                    </p>
+                    <div class="d-flex flex-wrap gap-2 mb-4">
+                        {% if business.location %}
+                            <span class="badge rounded-pill border border-secondary text-secondary fw-normal py-2 px-3">
+                                <i class="bi bi-geo-alt"></i> {{ business.location }}
+                            </span>
+                        {% endif %}
+                        {% if business.delivers %}
+                            <span class="badge bg-success py-2 px-3">
+                                <i class="bi bi-truck"></i> Delivers
+                            </span>
+                        {% endif %}
+                    </div>
 
-                    <div class="d-flex justify-content-between flex-wrap gap-2 mt-4">
-                        <button class="btn btn-outline-success">
-                            <img class="text-nowrap" src="{{ url_for('static', filename='images/whatsapp.png') }}" width="30"  style="color: #25D366;" alt="WhatsApp_Icon">
-                            <a href="https://wa.me/233{{ business.whatsapp }}" target="_blank" style="text-decoration: none; color: black;">
-                                Chat on WhatsApp
+                    <div class="d-flex flex-wrap gap-2">
+                        {% if business.whatsapp %}
+                            <a href="https://wa.me/{{ business.whatsapp }}" target="_blank"
+                               class="btn btn-success">
+                                <i class="bi bi-whatsapp"></i> WhatsApp
                             </a>
-                        </button>
-                        <button onclick="history.back()" class="btn btn-outline-warning" style="color:black">
-                            <i class="bi bi-arrow-left"></i> Back
-                        </button>
-                    </div>
-                    
-                </div>
-            </div>
-
-            <div class="row ms-2 me-3">
-                <div class="col-md-9 border border-2 rounded-3 pt-2 px-3 mt-2" width="100%" height="auto">
-                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-                        <h5>
-                            {{ business.business_name }}
-                        </h5>
-                        <span>
-                            <small class="border rounded-pill px-1 text-nowrap" style="background-color: rgb(168, 243, 218);">
-                                {{ business.category }}
-                            </small>
-                        </span>
-                    </div>
-
-                    <div>
-                        <p>
-                            {{ business.description }}
-                        </p>
-                    </div>
-                </div>
-                
-                <div class="col-md-3 border rounded-3 py-3 mt-3">
-                    <div>
-                        <small>
-                            <i class="bi bi-calendar-date"></i> <strong>Business Hours</strong>
-                        </small>
-                    </div>
-
-                    <div>
-                        <div class="pb-2 d-flex justify-content-between">
-                            <span>
-                                <small>
-                                    Mon-Fri
-                                </small>
-                            </span>
-                            <span>
-                                <small>
-                                    8:00 AM &ndash; 7:00 PM
-                                </small>
-                            </span>
-                        </div>
-
-                        <div class="pb-2 d-flex justify-content-between">
-                            <span>
-                                <small>
-                                    Sat
-                                </small>
-                            </span>
-                            <span>
-                                <small>
-                                    9:00 AM &ndash; 7:00 PM
-                                </small>
-                            </span>
-                        </div>
-
-                        <div class="pb-2 d-flex justify-content-between">
-                            <span>
-                                <small>
-                                    Sun
-                                </small>
-                            </span>
-                            <span>
-                                <small style="color: rgba(215, 70, 70, 0.809);">
-                                    Closed
-                                </small>
-                            </span>
-                        </div>
+                        {% endif %}
+                        {% if business.phone %}
+                            <a href="tel:{{ business.phone }}" class="btn btn-outline-dark">
+                                <i class="bi bi-telephone"></i> {{ business.phone }}
+                            </a>
+                        {% endif %}
+                        {% if current_user.is_authenticated and current_user.id == business.user_id %}
+                            <a href="/business/{{ business.id }}/edit" class="btn btn-outline-warning ms-auto">
+                                <i class="bi bi-pencil"></i> Edit This Listing
+                            </a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
+
+            <div class="text-center mt-4">
+                <a href="/" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i> Back to all businesses
+                </a>
+            </div>
+
         </div>
-    </section>
+    </div>
+</div>
 {% endblock main %}

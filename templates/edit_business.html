@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Add Your Business — StuBiz{% endblock %}
+{% block title %}Edit {{ business.business_name }} — StuBiz{% endblock %}
 
 {% block main %}
 <div class="container py-4">
@@ -7,65 +7,60 @@
         <div class="col-md-7">
 
             <div class="text-center mb-4">
-                <h2 class="fw-bold">List Your Business</h2>
-                <p class="text-muted">Fill in your details and get discovered by students.</p>
+                <h2 class="fw-bold">Edit Your Business</h2>
+                <p class="text-muted">Update your listing details below.</p>
             </div>
 
-            <form action="/new-listing" method="POST" enctype="multipart/form-data" class="new-listing-form">
+            <form action="/business/{{ business.id }}/edit" method="POST" enctype="multipart/form-data">
 
                 <div class="mb-3">
                     <label class="form-label fw-bold">Business Name *</label>
                     <input type="text" name="business_name" class="form-control"
-                           value="{{ form_data.business_name if form_data else '' }}"
-                           placeholder="e.g. Cecilia's Skincare" required>
+                           value="{{ business.business_name }}" required>
                </div>
 
                 <div class="mb-3">
                     <label class="form-label fw-bold">Category *</label>
                     <select name="category" class="form-select" required>
-                        <option value="" {% if not form_data or not form_data.category %}selected{% endif %}>-- Select a category --</option>
-                        <option value="Food & Drinks" {% if form_data and form_data.category == "Food & Drinks" %}selected{% endif %}>Food & Drinks</option>
-                        <option value="Beauty & Skincare" {% if form_data and form_data.category == "Beauty & Skincare" %}selected{% endif %}>Beauty & Skincare</option>
-                        <option value="Fashion & Clothing" {% if form_data and form_data.category == "Fashion & Clothing" %}selected{% endif %}>Fashion & Clothing</option>
-                        <option value="Tech & Services" {% if form_data and form_data.category == "Tech & Services" %}selected{% endif %}>Tech & Services</option>
-                        <option value="Lights & Decor" {% if form_data and form_data.category == "Lights & Decor" %}selected{% endif %}>Lights & Decor</option>
-                        <option value="Services" {% if form_data and form_data.category == "Services" %}selected{% endif %}>Services</option>
-                        <option value="Other" {% if form_data and form_data.category == "Other" %}selected{% endif %}>Other</option>
+                        <option value="Food & Drinks" {% if business.category == "Food & Drinks" %}selected{% endif %}>Food & Drinks</option>
+                        <option value="Beauty & Skincare" {% if business.category == "Beauty & Skincare" %}selected{% endif %}>Beauty & Skincare</option>
+                        <option value="Fashion & Clothing" {% if business.category == "Fashion & Clothing" %}selected{% endif %}>Fashion & Clothing</option>
+                        <option value="Tech & Services" {% if business.category == "Tech & Services" %}selected{% endif %}>Tech & Services</option>
+                        <option value="Lights & Decor" {% if business.category == "Lights & Decor" %}selected{% endif %}>Lights & Decor</option>
+                        <option value="Services" {% if business.category == "Services" %}selected{% endif %}>Services</option>
+                        <option value="Other" {% if business.category == "Other" %}selected{% endif %}>Other</option>
                     </select>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label fw-bold">Business Description *</label>
                     <textarea name="description" class="form-control" rows="4"
-                              placeholder="Tell customers what you sell..." required>{{ form_data.description if form_data else '' }}</textarea>
+                              required>{{ business.description }}</textarea>
                     <div class="form-text text-muted">Minimum 20 characters.</div>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label fw-bold">WhatsApp Number</label>
                     <input type="text" name="whatsapp" class="form-control"
-                           value="{{ form_data.whatsapp if form_data else '' }}"
-                           placeholder="e.g. 0241234567">
+                           value="{{ business.whatsapp or '' }}" placeholder="e.g. 0241234567">
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label fw-bold">Phone Number</label>
                     <input type="text" name="phone" class="form-control"
-                           value="{{ form_data.phone if form_data else '' }}"
-                           placeholder="e.g. 0201234567">
+                           value="{{ business.phone or '' }}" placeholder="e.g. 0201234567">
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label fw-bold">Location on Campus</label>
                     <input type="text" name="location" class="form-control"
-                           value="{{ form_data.location if form_data else '' }}"
-                           placeholder="e.g. Near Science Block">
+                           value="{{ business.location or '' }}" placeholder="e.g. Near Science Block">
                 </div>
 
                 <div class="mb-3 form-check">
                     <input type="checkbox" name="delivers"
                            class="form-check-input" id="delivers"
-                           {% if form_data and form_data.delivers %}checked{% endif %}>
+                           {% if business.delivers %}checked{% endif %}>
                     <label class="form-check-label" for="delivers">
                         I offer delivery
                     </label>
@@ -73,15 +68,27 @@
 
                 <div class="mb-4">
                     <label class="form-label fw-bold">Product Photo</label>
+                    {% if business.photo_filename %}
+                        <div class="mb-2">
+                            <img src="{{ url_for('static', filename='uploads/' + business.photo_filename) }}"
+                                 style="width:200px; border-radius:8px;" alt="Current photo">
+                            <div class="form-text text-muted">Current photo — leave the field below empty to keep it.</div>
+                        </div>
+                    {% endif %}
                     <input type="file" name="photo" id="photoInput"
                            class="form-control" accept="image/*">
                     <img id="photoPreview" src=""
                          style="display:none; width:200px; margin-top:10px; border-radius:8px;">
                 </div>
 
-                <button type="submit" class="btn btn-warning w-100 fw-bold py-2">
-                    Submit My Business
-                </button>
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-warning fw-bold py-2 flex-fill">
+                        Save Changes
+                    </button>
+                    <a href="/dashboard" class="btn btn-outline-secondary py-2">
+                        Cancel
+                    </a>
+                </div>
 
             </form>
         </div>
