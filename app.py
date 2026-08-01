@@ -1,5 +1,6 @@
 import os
 import time
+import uuid
 from flask import Flask, render_template, request, redirect, url_for, flash
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -174,16 +175,18 @@ def new_listing():
 
         if not business_name or not category or len(description) < 20:
             flash("Please fill in all fields correctly.", "error")
-            return redirect(url_for("new_listing"))
+            return render_template("new_listing.html", form_data=request.form)
 
         photo_filename = ""
         photo_file = request.files.get("photo")
         if photo_file and photo_file.filename:
             if allowed_file(photo_file.filename):
                 filename = secure_filename(photo_file.filename)
-                unique_filename = f"biz_{int(time.time())}_{filename}"
+                unique_filename = f"biz_{int(time.time())}_{uuid.uuid4().hex[:8]}_{filename}"
                 photo_file.save(os.path.join(app.config["UPLOAD_FOLDER"], unique_filename))
                 photo_filename = unique_filename
+            else:
+                flash("That photo file type isn't supported (use PNG, JPG, JPEG, GIF, or WEBP). Your listing was saved without a photo.", "error")
 
         business_data = {
             "user_id": current_user.id,
@@ -232,22 +235,40 @@ def edit_business(business_id):
         return redirect(url_for('dashboard'))
 
     if request.method == "POST":
+        business_name = request.form.get("business_name", "").strip()
+        category      = request.form.get("category", "").strip()
+        description   = request.form.get("description", "").strip()
+        whatsapp      = request.form.get("whatsapp", "").strip()
+        phone         = request.form.get("phone", "").strip()
+        location      = request.form.get("location", "").strip()
+        delivers      = 1 if request.form.get("delivers") else 0
+
+        # 🛑 Same validation rules as new_listing — edits shouldn't be able to
+        # save a blank name/category or an under-length description.
+        if not business_name or not category or len(description) < 20:
+            flash("Please fill in all fields correctly (description must be at least 20 characters).", "error")
+            return render_template("edit_business.html", business=business)
+
         updated_data = {
-            "business_name": request.form.get("business_name"),
-            "category":      request.form.get("category"),
-            "description":   request.form.get("description"),
-            "whatsapp":      request.form.get("whatsapp"),
-            "phone":         request.form.get("phone"),
-            "location":      request.form.get("location"),
-            "delivers":      1 if request.form.get("delivers") else 0
+            "business_name": business_name,
+            "category":      category,
+            "description":   description,
+            "whatsapp":      whatsapp,
+            "phone":         phone,
+            "location":      location,
+            "delivers":      delivers
         }
-        
+
         photo_file = request.files.get("photo")
-        if photo_file and photo_file.filename and allowed_file(photo_file.filename):
-            filename = secure_filename(photo_file.filename)
-            unique_filename = f"biz_{int(time.time())}_{filename}"
-            photo_file.save(os.path.join(app.config["UPLOAD_FOLDER"], unique_filename))
-            updated_data["photo_filename"] = unique_filename
+        if photo_file and photo_file.filename:
+            if allowed_file(photo_file.filename):
+                filename = secure_filename(photo_file.filename)
+                unique_filename = f"biz_{int(time.time())}_{uuid.uuid4().hex[:8]}_{filename}"
+                photo_file.save(os.path.join(app.config["UPLOAD_FOLDER"], unique_filename))
+                updated_data["photo_filename"] = unique_filename
+            else:
+                flash("That photo file type isn't supported (use PNG, JPG, JPEG, GIF, or WEBP). Your existing photo was kept.", "error")
+                updated_data["photo_filename"] = business["photo_filename"]
         else:
             # No new photo selected — keep the existing one instead of wiping it out
             updated_data["photo_filename"] = business["photo_filename"]
@@ -271,6 +292,12 @@ def delete_business(business_id):
     if not business or business['user_id'] != current_user.id:
         flash("Security Alert: You do not have permission to delete this listing.", "error")
         return redirect(url_for('dashboard'))
+
+    # Clean up the uploaded photo on disk so deleted listings don't leave orphaned files
+    if business["photo_filename"]:
+        photo_path = os.path.join(app.config["UPLOAD_FOLDER"], business["photo_filename"])
+        if os.path.exists(photo_path):
+            os.remove(photo_path)
 
     database.delete_business(business_id)
     flash("Listing deleted successfully.", "success")

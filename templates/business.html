@@ -1,114 +1,74 @@
 {% extends "base.html" %}
-{% block title %}Edit {{ business.business_name }} — StuBiz{% endblock %}
+{% block title %}{{ business.business_name }} — StuBiz{% endblock %}
 
 {% block main %}
 <div class="container py-4">
     <div class="row justify-content-center">
-        <div class="col-md-7">
+        <div class="col-md-8">
 
-            <div class="text-center mb-4">
-                <h2 class="fw-bold">Edit Your Business</h2>
-                <p class="text-muted">Update your listing details below.</p>
+            <div class="card shadow-sm">
+                {% if business.photo_filename %}
+                    <img src="{{ url_for('static', filename='uploads/' + business.photo_filename) }}"
+                         class="card-img-top" style="height:320px; object-fit:cover;"
+                         alt="{{ business.business_name }}">
+                {% else %}
+                    <div class="bg-secondary text-white d-flex align-items-center justify-content-center"
+                         style="height:320px;">
+                        <span>No Photo</span>
+                    </div>
+                {% endif %}
+
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h2 class="fw-bold mb-0">{{ business.business_name }}</h2>
+                        <span class="badge bg-light text-dark border">{{ business.category }}</span>
+                    </div>
+
+                    <p class="text-muted mb-3">Listed by {{ business.owner_name }}</p>
+
+                    <p class="mb-4">{{ business.description }}</p>
+
+                    <div class="d-flex flex-wrap gap-2 mb-4">
+                        {% if business.location %}
+                            <span class="badge rounded-pill border border-secondary text-secondary fw-normal py-2 px-3">
+                                <i class="bi bi-geo-alt"></i> {{ business.location }}
+                            </span>
+                        {% endif %}
+                        {% if business.delivers %}
+                            <span class="badge bg-success py-2 px-3">
+                                <i class="bi bi-truck"></i> Delivers
+                            </span>
+                        {% endif %}
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2">
+                        {% if business.whatsapp %}
+                            <a href="https://wa.me/{{ business.whatsapp }}" target="_blank"
+                               class="btn btn-success">
+                                <i class="bi bi-whatsapp"></i> WhatsApp
+                            </a>
+                        {% endif %}
+                        {% if business.phone %}
+                            <a href="tel:{{ business.phone }}" class="btn btn-outline-dark">
+                                <i class="bi bi-telephone"></i> {{ business.phone }}
+                            </a>
+                        {% endif %}
+                        {% if current_user.is_authenticated and current_user.id == business.user_id %}
+                            <a href="/business/{{ business.id }}/edit" class="btn btn-outline-warning ms-auto">
+                                <i class="bi bi-pencil"></i> Edit This Listing
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
 
-            <form action="/business/{{ business.id }}/edit" method="POST" enctype="multipart/form-data">
+            <div class="text-center mt-4">
+                <a href="/" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i> Back to all businesses
+                </a>
+            </div>
 
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Business Name *</label>
-                    <input type="text" name="business_name" class="form-control"
-                           value="{{ business.business_name }}" required>
-               </div>
-
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Category *</label>
-                    <select name="category" class="form-select" required>
-                        <option value="Food & Drinks" {% if business.category == "Food & Drinks" %}selected{% endif %}>Food & Drinks</option>
-                        <option value="Beauty & Skincare" {% if business.category == "Beauty & Skincare" %}selected{% endif %}>Beauty & Skincare</option>
-                        <option value="Fashion & Clothing" {% if business.category == "Fashion & Clothing" %}selected{% endif %}>Fashion & Clothing</option>
-                        <option value="Tech & Services" {% if business.category == "Tech & Services" %}selected{% endif %}>Tech & Services</option>
-                        <option value="Lights & Decor" {% if business.category == "Lights & Decor" %}selected{% endif %}>Lights & Decor</option>
-                        <option value="Services" {% if business.category == "Services" %}selected{% endif %}>Services</option>
-                        <option value="Other" {% if business.category == "Other" %}selected{% endif %}>Other</option>
-                    </select>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Business Description *</label>
-                    <textarea name="description" class="form-control" rows="4"
-                              required>{{ business.description }}</textarea>
-                    <div class="form-text text-muted">Minimum 20 characters.</div>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label fw-bold">WhatsApp Number</label>
-                    <input type="text" name="whatsapp" class="form-control"
-                           value="{{ business.whatsapp or '' }}" placeholder="e.g. 0241234567">
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Phone Number</label>
-                    <input type="text" name="phone" class="form-control"
-                           value="{{ business.phone or '' }}" placeholder="e.g. 0201234567">
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Location on Campus</label>
-                    <input type="text" name="location" class="form-control"
-                           value="{{ business.location or '' }}" placeholder="e.g. Near Science Block">
-                </div>
-
-                <div class="mb-3 form-check">
-                    <input type="checkbox" name="delivers"
-                           class="form-check-input" id="delivers"
-                           {% if business.delivers %}checked{% endif %}>
-                    <label class="form-check-label" for="delivers">
-                        I offer delivery
-                    </label>
-                </div>
-
-                <div class="mb-4">
-                    <label class="form-label fw-bold">Product Photo</label>
-                    {% if business.photo_filename %}
-                        <div class="mb-2">
-                            <img src="{{ url_for('static', filename='uploads/' + business.photo_filename) }}"
-                                 style="width:200px; border-radius:8px;" alt="Current photo">
-                            <div class="form-text text-muted">Current photo — leave the field below empty to keep it.</div>
-                        </div>
-                    {% endif %}
-                    <input type="file" name="photo" id="photoInput"
-                           class="form-control" accept="image/*">
-                    <img id="photoPreview" src=""
-                         style="display:none; width:200px; margin-top:10px; border-radius:8px;">
-                </div>
-
-                <div class="d-flex gap-2">
-                    <button type="submit" class="btn btn-warning fw-bold py-2 flex-fill">
-                        Save Changes
-                    </button>
-                    <a href="/dashboard" class="btn btn-outline-secondary py-2">
-                        Cancel
-                    </a>
-                </div>
-
-            </form>
         </div>
     </div>
 </div>
 {% endblock main %}
-
-{% block scripts %}
-<script>
-    document.getElementById("photoInput").addEventListener("change", function() {
-        const file = this.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const preview = document.getElementById("photoPreview");
-                preview.src = e.target.result;
-                preview.style.display = "block";
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-</script>
-{% endblock scripts %}
