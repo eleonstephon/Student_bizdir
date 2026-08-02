@@ -51,6 +51,25 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
+# ==========================================
+# 📱 WHATSAPP NUMBER NORMALIZATION
+# ==========================================
+# WhatsApp's click-to-chat links (wa.me/<number>) need the FULL international
+# number: country code + number, no leading 0, no "+", no spaces/dashes.
+# Change this if StuBiz is used outside Ghana.
+WHATSAPP_COUNTRY_CODE = "233"
+
+def normalize_whatsapp(raw_number):
+    """ Converts whatever the user typed into the wa.me-ready format. """
+    digits = re.sub(r"\D", "", raw_number or "")
+    if not digits:
+        return ""
+    if digits.startswith(WHATSAPP_COUNTRY_CODE):
+        return digits
+    if digits.startswith("0"):
+        digits = digits[1:]
+    return f"{WHATSAPP_COUNTRY_CODE}{digits}"
+
 with app.app_context():
     database.init_db()
 
@@ -168,7 +187,7 @@ def new_listing():
         business_name = request.form.get("business_name", "").strip()
         category      = request.form.get("category", "").strip()
         description   = request.form.get("description", "").strip()
-        whatsapp      = request.form.get("whatsapp", "").strip()
+        whatsapp      = normalize_whatsapp(request.form.get("whatsapp", ""))
         phone         = request.form.get("phone", "").strip()
         location      = request.form.get("location", "").strip()
         delivers      = 1 if request.form.get("delivers") else 0
@@ -238,7 +257,7 @@ def edit_business(business_id):
         business_name = request.form.get("business_name", "").strip()
         category      = request.form.get("category", "").strip()
         description   = request.form.get("description", "").strip()
-        whatsapp      = request.form.get("whatsapp", "").strip()
+        whatsapp      = normalize_whatsapp(request.form.get("whatsapp", ""))
         phone         = request.form.get("phone", "").strip()
         location      = request.form.get("location", "").strip()
         delivers      = 1 if request.form.get("delivers") else 0

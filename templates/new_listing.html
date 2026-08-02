@@ -43,9 +43,10 @@
 
                 <div class="mb-3">
                     <label class="form-label fw-bold">WhatsApp Number</label>
-                    <input type="text" name="whatsapp" class="form-control"
+                    <input type="text" name="whatsapp" id="whatsappInput" class="form-control"
                            value="{{ form_data.whatsapp if form_data else '' }}"
-                           placeholder="e.g. 0241234567">
+                           placeholder="e.g. 233241234567">
+                    <div class="form-text text-muted">Include your country code instead of a leading 0 (e.g. 233241234567, not 0241234567).</div>
                 </div>
 
                 <div class="mb-3">
@@ -101,6 +102,16 @@
                 preview.style.display = "block";
             };
             reader.readAsDataURL(file);
+        }
+    });
+
+    // If someone types a WhatsApp number starting with 0, swap it for the
+    // country code before submitting (the server does this too as a backup).
+    document.querySelector("form").addEventListener("submit", function() {
+        const waInput = document.getElementById("whatsappInput");
+        const val = waInput.value.trim();
+        if (val.startsWith("0")) {
+            waInput.value = "233" + val.slice(1);
         }
     });
 </script>

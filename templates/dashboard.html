@@ -118,8 +118,9 @@
 
                     <div class="mb-2">
                         <label class="form-label fw-bold small">WhatsApp</label>
-                        <input type="text" name="whatsapp" class="form-control form-control-sm"
-                               value="{{ biz.whatsapp or '' }}">
+                        <input type="text" name="whatsapp" class="form-control form-control-sm whatsapp-input"
+                               value="{{ biz.whatsapp or '' }}" placeholder="e.g. 233241234567">
+                        <div class="form-text">Country code instead of a leading 0 (e.g. 233241234567).</div>
                     </div>
 
                     <div class="mb-2">
@@ -213,6 +214,19 @@ function confirmDelete(bizId, bizName) {
     }
     // If not confirmed - do nothing
 }
+
+// ── WhatsApp normalization ───────────────────────────────────
+// If someone types a number starting with 0 in any edit card, swap it for
+// the country code before that card's form submits (server does this too).
+document.addEventListener("submit", function(e) {
+    const waInput = e.target.querySelector(".whatsapp-input");
+    if (waInput) {
+        const val = waInput.value.trim();
+        if (val.startsWith("0")) {
+            waInput.value = "233" + val.slice(1);
+        }
+    }
+});
 
 </script>
 {% endblock scripts %}
